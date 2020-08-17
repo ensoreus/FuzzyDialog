@@ -1,0 +1,136 @@
+{
+    "class": "DialogTree",
+    "name": "Greetings",
+    "speakers":[
+	{
+	    "class": "Speaker",
+	    "name": "Centurion"
+	},
+	{
+	    "class": "Speaker",
+	    "name": "Phazael"
+	},
+	{
+	    "class": "Speaker",
+	    "name": "Mind"
+	},
+	{
+	    "class": "Speaker",
+	    "name": "Soul"
+	},
+	{
+	    "class": "Speaker",
+	    "name" : "Spirit"
+	},
+	{
+	    "class": "Speaker",
+	    "name" : "Body"
+	}
+    ],
+    "initial":[
+	{
+	    "class": "Speech",
+	    "speaker": "0",
+	    "id": "1",
+	    "parent": "-1",
+	    "phrases": [
+		{
+		    "class": "Phrase",
+		    "source":"oral",
+		    "text": "Шалом, добрий пане! Дуже приголомшений такими поважним гостем!" 
+		}
+		],
+	    "consequent": []
+	}
+    ],
+    "threads":[
+	{
+	    "class": "Speech",
+	    "id": "2",
+	    "parent": "1",
+	    "phrases": [
+		{
+		    "class": "Phrase",
+		    "source": "verbal",
+		    "id": "2",
+		    "speaker": 1,
+		    "text": "Шалом! Приємно здивований теплим прийомом у римскому домі",
+		    "nextId":"4"
+		},
+		{
+		    "class": "Phrase",
+		    "source": "internal",
+		    "id":"4",
+		    "speaker": 3,
+		    "text": "Любчику, ти навіть не уявляєш які кепські в тебе справи",
+		    "nextId":"5"
+		},
+		{
+		    "class": "Phrase",
+		    "source": "internal",
+		    "id": "5",
+		    "speaker": 5,
+		    "text": "Сподіваюсь цей римлянин дійсно вірний Торі і не нагодує гідотою",
+		    "nextId":"6"
+		},
+		{
+		    "class": "Phrase",
+		    "source": "internal",
+		    "id": "6",
+		    "speaker": 3,
+		    "text": "Не важливо це! В нас тут важлива справа!",
+		    "nextId":"7"
+		},
+		{
+		    "class": "Phrase",
+		    "source": "internal",
+		    "id": "7",
+		    "speaker": 5,
+		    "text": "Як жеж ноги болять...",
+		    "nextId":"4"
+		}
+		 
+	    ],
+	    "consequent":[
+		{
+		    "class": "Speech",
+		    "id": "8",
+		    "parent": "7",
+		    "phrases":[
+			{
+			    "class": "Phrase",
+			    "source": "verbal",
+			    "speaker": 0,
+			    "id": "9",
+			    "text": "Вибачте, я не був готовий до гостей, тому пригостити майже нема чим.",
+			    "nextId:": "10"
+			},
+			{
+			    "class": "Phrase",
+			    "source": "verbal",
+			    "speaker": 0,
+			    "id": "10",
+			    "text": "Певен що ви мене правильно зрозумієте якщо я попрошу у вас документи. Формальність, авжеж, але така важлива річ у нашому жорстокому світі"
+			}
+		    ]
+		}
+	    ] 
+	},
+	{
+	    "class": "Speech",
+	    "id": "11",
+	    "parent": "10",
+	    "phrases":[
+		{
+		    "class": "Phrase",
+		    "source": "verbal",
+		    "speaker": 1,
+		    "id": "12",
+		    "text": "Так, авжеж. Ось лист від розпорядника Синедріону. Нагадаю, моє ім'я Фазаель",
+		    "nextId": "13"
+		}
+	    ]
+	}
+    ]
+}
+
