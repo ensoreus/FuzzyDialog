@@ -40,13 +40,15 @@ void UDialogTreeBuilder::loadTree(UDialogTree* tree){
       if (JsonObject->GetStringField(TEXT("class")).Equals(TEXT("DialogTree"))){
 	UE_LOG(LogTemp, Warning, TEXT("DialogTree found"));
 	tree->sceneName = JsonObject->GetStringField(TEXT("name"));
+	auto speakers = JsonObject->GetArrayField(TEXT("speakers"));
 	
       }
       //GenerateStructsFromJson(AwesomeStructs, JsonObject);
     }
   else {
     if (GEngine) {
-      GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Not Deserialize"));
+      UE_LOG(LogTemp, Warning, TEXT("No object found"));
+	
     }
   }
 }
