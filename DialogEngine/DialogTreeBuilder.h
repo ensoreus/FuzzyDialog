@@ -40,5 +40,8 @@ protected:
   USpeech* parseAsSpeech(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const;
   USpeaker* parseAsSpeaker(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const;
   UPhrase* parseAsPhrase(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const;
+private:
+  USpeech* currentSpeech;
+  UDialogNode* currentNode;
 };
 

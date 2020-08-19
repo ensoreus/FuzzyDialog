@@ -41,6 +41,7 @@ void UDialogTreeBuilder::loadTree(UDialogTree* tree){
 	UE_LOG(LogTemp, Warning, TEXT("DialogTree found"));
 	tree->sceneName = JsonObject->GetStringField(TEXT("name"));
 	auto speakers = JsonObject->GetArrayField(TEXT("speakers"));
+
 	
       }
       //GenerateStructsFromJson(AwesomeStructs, JsonObject);
@@ -99,6 +100,9 @@ USpeaker* UDialogTreeBuilder::parseAsSpeaker(const FJsonObject& json, FString Ke
 
 USpeech* UDialogTreeBuilder::parseAsSpeech(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const{
   auto speech = NewObject<USpeech>(parent);
+  speech->Id = FName(json.GetStringField(TEXT("id")));
+  speech->Parent = FName(json.GetStringField(TEXT("parent")));
+  speech->
   return speech;
 }
 
