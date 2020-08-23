@@ -23,13 +23,14 @@ class UPhrase : public UDialogNode
   GENERATED_BODY()
   
 public:
+  static USource souceForString(const FString& jsSource);
   
   UPhrase();
   UPROPERTY(EditAnywhere, Category = "Dialog")
   USpeaker *speaker;
 
   UPROPERTY(EditAnywhere, Category = "Dialog")
-  FString text;
+  FText text;
 
   UPROPERTY(EditAnywhere, Category = "Dialog")
   TEnumAsByte<USource> source;

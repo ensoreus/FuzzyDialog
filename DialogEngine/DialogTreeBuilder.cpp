@@ -23,25 +23,39 @@ UDialogTreeBuilder::UDialogTreeBuilder(){}
 UDialogTree* UDialogTreeBuilder::build(){
   auto world = GetWorld();
   auto myGameMode = Cast<ACenturionIntGameMode>(UGameplayStatics::GetGameMode(world));
-  auto dialogTree =  NewObject<UDialogTree>(myGameMode->DialogTree);
-  loadTree(dialogTree);
-  return dialogTree;
+  this->tree =  NewObject<UDialogTree>(myGameMode->DialogTree);
+  loadTree();
+  return tree;
 }
 
-void UDialogTreeBuilder::loadTree(UDialogTree* tree){
+void UDialogTreeBuilder::loadTree() {
 
   TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(jsonFullPath(sceneName));
   TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
-  //  TArray<FAwesomeStruct> AwesomeStruct;
-  
+ 
   if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
     {
       
       if (JsonObject->GetStringField(TEXT("class")).Equals(TEXT("DialogTree"))){
 	UE_LOG(LogTemp, Warning, TEXT("DialogTree found"));
 	tree->sceneName = JsonObject->GetStringField(TEXT("name"));
-	auto speakers = JsonObject->GetArrayField(TEXT("speakers"));
 	
+	//load Speakers
+	auto speakers = JsonObject->GetArrayField(TEXT("speakers"));
+	  for (auto& joSpeaker : speakers){
+	    auto className = FName(*(joSpeaker->AsObject()->GetStringField(TEXT("class"))));
+	    if (className == FName(TEXT("speaker"))) {
+	      auto speaker = parseAsSpeaker(joSpeaker->AsObject());
+	      tree->speakers.Add(speaker);
+	    }
+	  }
+
+	  
+	  //load initial Speech
+	  auto joInitialSpeech = JsonObject->GetObjectField(TEXT("initial"));
+	  auto initialSpeech = parseAsSpeech(joInitialSpeech, tree->initialHook);
+	  tree->initial = initialSpeech;
+	  currentSpeech = initialSpeech;
       }
       //GenerateStructsFromJson(AwesomeStructs, JsonObject);
     }
@@ -53,7 +67,7 @@ void UDialogTreeBuilder::loadTree(UDialogTree* tree){
   }
 }
 
-UDialogNode* UDialogTreeBuilder::generateStructsFromJson( const FJsonObject& jsonObject ) const
+/*UDialogNode* UDialogTreeBuilder::generateStructsFromJson( const FJsonObject& jsonObject ) const
 {
   auto tree = NewObject<USpeech>();
 //    tree->name = JsonObject->GetStringField(TEXT("name"));
@@ -77,7 +91,7 @@ UDialogNode* UDialogTreeBuilder::generateStructsFromJson( const FJsonObject& jso
 //        tree.Push(AwesomeStruct);
 //    }
     return tree;
-}
+    }*/
 
 FString  UDialogTreeBuilder::jsonFullPath(const FString& Path) const
 {
@@ -90,19 +104,31 @@ FString  UDialogTreeBuilder::jsonFullPath(const FString& Path) const
     return JsonStr;
 }
 
-USpeaker* UDialogTreeBuilder::parseAsSpeaker(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const
+USpeaker* UDialogTreeBuilder::parseAsSpeaker(TSharedPtr<FJsonObject> json)
 {
-  auto speaker = NewObject<USpeaker>(parent);
-  speaker->name = json.GetStringField("name");
+  auto speaker = NewObject<USpeaker>(tree);
+  speaker->name = json->GetStringField("name");
   return speaker;
 }
 
-USpeech* UDialogTreeBuilder::parseAsSpeech(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const{
-  auto speech = NewObject<USpeech>(parent);
+USpeech* UDialogTreeBuilder::parseAsSpeech(TSharedPtr<FJsonObject> json, UDialogNode* parentNode)
+{
+  auto speech = NewObject<USpeech>(parentNode);
+  speech->Id = FName(*(json->GetStringField(TEXT("id"))));
+  int32 speakerIndex = json->GetNumberField(TEXT("speaker")); 
+  speech->speaker = tree->speakers[speakerIndex];
+  speech->Parent = parentNode;
+  this->currentSpeech = speech;
   return speech;
 }
 
-UPhrase* UDialogTreeBuilder::parseAsPhrase(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const{
-  auto phrase = NewObject<UPhrase>(parent);
+UPhrase* UDialogTreeBuilder::parseAsPhrase(TSharedPtr<FJsonObject> json)
+{
+  auto phrase = NewObject<UPhrase>(currentSpeech);
+  //phrase->text= NSLCLOCAL(json->GetStringField(TEXT("text")));
+  phrase->Id = FName(*(json->GetStringField(TEXT("id"))));
+  phrase->Parent = currentSpeech;
+  phrase->source = UPhrase::souceForString(json->GetStringField(TEXT("source")));
+  //  phrase->nextNode = //json->GetStringField(TEXT("nextId"));
   return phrase;
 }

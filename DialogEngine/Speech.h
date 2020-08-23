@@ -6,6 +6,8 @@
 #include "DialogNode.h"
 #include "Speech.generated.h"
 
+class UPhrase;
+class USpeaker;
 /**
  * 
  */
@@ -15,5 +17,6 @@ class USpeech: public UDialogNode
   GENERATED_BODY()
 public:
 	USpeech();
-	
+  USpeaker* speaker;
+  TArray<UPhrase*> phrases;
 };

@@ -8,7 +8,9 @@
 #include "Dom/JsonObject.h"
 
 
-UDialogTree::UDialogTree(){}
+UDialogTree::UDialogTree(){
+  initialHook = NewObject<UDialogNode>(this);
+}
 
 void UDialogTree::buildNextSubtree(){
 }

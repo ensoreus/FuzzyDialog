@@ -15,12 +15,12 @@ class UDialogNode: public UObject
     GENERATED_BODY()
 public:
   UDialogNode();
-  UPROPERTY(EditAnyWhere, Category="Dialog")
+  UPROPERTY(EditAnywhere, Category="Dialog")
   UDialogNode* Parent;
 
-  UPROPERTY(EditAnyWhere, Category="Dialog")
-  TMap<FString, UDialogNode*> Consequence;
+  UPROPERTY(EditAnywhere, Category="Dialog")
+  TMap<FName, UDialogNode*> Consequence;
   
-  UPROPERTY(EditAnyWhere, Category="Dialog")
-  FString Id;  
+  UPROPERTY(EditAnywhere, Category="Dialog" )
+  FName Id;  
 };

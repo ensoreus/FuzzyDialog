@@ -29,8 +29,9 @@ public:
   UPROPERTY(EditAnywhere, Category = "Dialog")
   TArray<USpeaker*> speakers;
   UPROPERTY(EditAnywhere, Category = "Dialog")
-  TArray<USpeech*> initial;
-  
+  USpeech* initial;
+  UPROPERTY(EditAnywhere, Category = "Dialog")
+  UDialogNode* initialHook;
   //void loadTree();
   void buildNextSubtree();
 };

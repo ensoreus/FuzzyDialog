@@ -27,7 +27,7 @@
 	    "name" : "Body"
 	}
     ],
-    "initial":[
+    "initial":
 	{
 	    "class": "Speech",
 	    "speaker": "0",
@@ -36,13 +36,13 @@
 	    "phrases": [
 		{
 		    "class": "Phrase",
-		    "source":"oral",
+		    "source":"verbal",
+		    "speaker":0,
 		    "text": "Шалом, добрий пане! Дуже приголомшений такими поважним гостем!" 
 		}
 		],
 	    "consequent": []
-	}
-    ],
+	},
     "threads":[
 	{
 	    "class": "Speech",

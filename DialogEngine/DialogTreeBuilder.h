@@ -32,13 +32,18 @@ class UDialogTreeBuilder: public UObject {
   UDialogTree* build();
 
 protected:
-  void loadTree(UDialogTree* tree);
+  void loadTree();
   
-  UDialogNode* generateStructsFromJson( const FJsonObject& jsonObject) const;
+  //  UDialogNode* generateStructsFromJson( const FJsonObject& jsonObject) const;
   FString jsonFullPath(const FString& Path) const;
   
-  USpeech* parseAsSpeech(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const;
-  USpeaker* parseAsSpeaker(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const;
-  UPhrase* parseAsPhrase(const FJsonObject& json, FString KeyName, TSubclassOf<class UDialogNode> parent) const;
+  USpeech* parseAsSpeech(TSharedPtr<FJsonObject> json, UDialogNode* parentNode);
+  USpeaker* parseAsSpeaker(TSharedPtr<FJsonObject> json);
+  UPhrase* parseAsPhrase(TSharedPtr<FJsonObject> json);
+
+private:
+  USpeech* currentSpeech;
+  UDialogNode* currentNode;
+  UDialogTree* tree;
 };
 
